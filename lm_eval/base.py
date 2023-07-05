@@ -630,6 +630,7 @@ class Task(abc.ABC):
             FEWSHOT_SEP = f"{self.SEP}{self.SEP}"
         else:        
             FEWSHOT_SEP = "\n\n"
+            
         if description:
             description += FEWSHOT_SEP
         elif hasattr(self, "DESCRIPTION"):
