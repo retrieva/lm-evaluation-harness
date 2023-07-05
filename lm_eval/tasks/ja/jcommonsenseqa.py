@@ -182,6 +182,7 @@ class JCommonsenseQAWithRinnaInstructionSFT(JCommonsenseQA):
     PROMPT_VERSION = 0.4
     DESCRIPTION = "ユーザー: 与えられた選択肢の中から、最適な答えを選んでください。<NL>システム: 分かりました。<NL>"
     SEP="<NL>"
+    FEWSHOT_SEP = "<NL>"
 
     def doc_to_text(self, doc):
         choices = self.SEP.join([f"- {choice}" for choice in doc['choices']])

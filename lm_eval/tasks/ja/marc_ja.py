@@ -131,6 +131,8 @@ class MARCJaWithRinnaInstructionSFT(MARCJaWithFintanPrompt):
     DESCRIPTION = "ユーザー: 与えられた製品レビューを、ポジティブまたはネガティブの感情クラスのいずれかに分類してください。<NL>システム: 分かりました。<NL>"    
     CHOICES = ["ポジティブ", "ネガティブ"]
     SEP = "<NL>"
+    FEWSHOT_SEP = "<NL>"
+
     def doc_to_text(self, doc):
         input_text = doc['query']
         return f"ユーザー: {input_text}{self.SEP}システム: "   

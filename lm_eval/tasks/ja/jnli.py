@@ -127,6 +127,8 @@ class JNLIWithRinnaInstructionSFT(JNLIWithFintanPrompt):
     PROMPT_VERSION = 0.4
     DESCRIPTION = "ユーザー: " + f"与えられた前提と仮説の関係を回答してください。出力は以下から選択してください：<NL>" + "<NL>".join(JNLIWithFintanPrompt.CHOICES) + "<NL>システム: 分かりました。<NL>"
     SEP = "<NL>"
+    FEWSHOT_SEP = "<NL>"
+
     def doc_to_text(self, doc):
         input_text = f"前提：{doc['premise']}\n仮説：{doc['hypothesis']}"
         return f"ユーザー: {input_text}{self.SEP}システム: "

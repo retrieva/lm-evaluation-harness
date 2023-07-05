@@ -192,10 +192,12 @@ class XLSumJaWithRinnaInstructionSFT(XLSumJa):
     PROMPT_VERSION = 0.4
     DESCRIPTION = "ユーザー: 与えられたニュース記事を要約してください。<NL>システム: 分かりました。<NL>"
     SEP = "<NL>"
+    FEWSHOT_SEP = "<NL>"
+
     def doc_to_text(self, doc):
         input_text = f"ニュース記事:{doc['text']}"
         return f"ユーザー: {input_text}{self.SEP}システム: "
-
+    
     def preprocess_ctx(self, ctx, max_length):
         return super().preprocess_ctx(ctx, max_length, ctx_prompt=f"{self.SEP}ユーザー: ", summary_prompt=f"{self.SEP}システム: ")
     

@@ -239,6 +239,8 @@ class JSQuADWithRinnaInstructionSFT(JSQuAD):
     PROMPT_VERSION = 0.4
     DESCRIPTION = "ユーザー: 与えられた文脈から、質問に対する答えを抜き出してください。<NL>システム: 分かりました。<NL>"
     SEP = "<NL>"
+    FEWSHOT_SEP = "<NL>"
+
     def doc_to_text(self, doc):
         input_text = f"文脈：{doc['context'].split('[SEP]')[-1].strip()}{self.SEP}質問：{doc['question']}"
         # input_text = f"質問：{doc['question']}<NL>文脈：{doc['context'].split('[SEP]')[-1].strip()}"
