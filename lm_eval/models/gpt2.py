@@ -1,6 +1,6 @@
 import torch
 import transformers
-from typing import Optional
+from typing import Optional, Union
 from lm_eval.base import BaseLM
 
 
@@ -11,6 +11,8 @@ class HFLM(BaseLM):
         pretrained="gpt2",
         revision="main",
         low_cpu_mem_usage=None,
+        torch_dtype=None,
+        device_map=None,
         subfolder=None,
         tokenizer=None,
         batch_size=1,
@@ -45,10 +47,16 @@ class HFLM(BaseLM):
             pretrained,
             load_in_8bit=load_in_8bit,
             low_cpu_mem_usage=low_cpu_mem_usage,
+            torch_dtype=torch_dtype,
+            device_map=device_map,
             revision=revision,
             trust_remote_code=trust_remote_code,
-        ).to(self.device)
-        self.gpt2.eval()
+        ).eval()
+        if not load_in_8bit:
+            try:
+                self.gpt2.to(self.device)
+            except:
+                print("Failed to place model onto specified device. This may be because the model is quantized via `bitsandbytes`. If the desired GPU is being used, this message is safe to ignore.")
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(
             pretrained if tokenizer is None else tokenizer,
             revision=revision,
