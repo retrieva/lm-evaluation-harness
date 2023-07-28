@@ -63,6 +63,8 @@ from .ja import xwinograd
 from .ja import xlsum_ja
 from .ja import jaqket_v2
 from .ja import mgsm
+from .ja import livedoor_summarization
+from .ja import wikihow_summarization
 
 ########################################
 # Translation tasks
@@ -340,7 +342,12 @@ TASK_REGISTRY = {
     "jaqket_v2": jaqket_v2.JAQKETV2,
     **jaqket_v2.construct_tasks(),
     "mgsm": mgsm.MGSM,
-    **mgsm.construct_tasks()
+    **mgsm.construct_tasks(),
+    # Retrieva
+    "livedoor_summarization": livedoor_summarization.LivedoorSummarization,
+    **livedoor_summarization.construct_tasks(),
+    "wikihow_summarization": wikihow_summarization.WikihowSummarization,
+    **wikihow_summarization.construct_tasks(),
 }
 
 
