@@ -19,7 +19,7 @@ class JSNLIWithFintanPrompt(MultipleChoiceTask):
     """
     prompt template is taken from [ChatGPT vs BERT: どちらが日本語をより理解できるのか?](https://fintan.jp/page/9126/)
     """
-    VERSION = 1.1
+    VERSION = 1.0
     PROMPT_VERSION = 0.2
     DATASET_PATH = "retrieva-jp/jsnli-v1.1"
     DATASET_NAME = None
@@ -55,7 +55,7 @@ class JSNLIWithFintanPrompt(MultipleChoiceTask):
             "premise": doc["sentence_a"],
             "hypothesis": doc["sentence_b"],
             "choices": self.CHOICES,
-            "gold": int(doc["label"]),
+            "gold": doc["label"],
         }
 
     def doc_to_text(self, doc):
@@ -71,7 +71,7 @@ class JSNLIWithFintanPrompt(MultipleChoiceTask):
         )
 
     def doc_to_target(self, doc):
-        return doc["choices"][doc["gold"]]
+        return doc["gold"]
 
     def construct_requests(self, doc, ctx):
         lls = [
