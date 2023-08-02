@@ -70,6 +70,7 @@ from .ja import pc_customer_demo
 from .ja import tmup
 from .ja import ebe_identification
 from .ja import jsnli
+from .ja import rcqa
 
 ########################################
 # Translation tasks
@@ -363,6 +364,8 @@ TASK_REGISTRY = {
     **ebe_identification.construct_tasks(),
     "jsnli": jsnli.JSNLIWithFintanPrompt,
     **jsnli.construct_tasks(),
+    "rcqa": rcqa.RCQA,
+    **rcqa.construct_tasks(),
 }
 
 
