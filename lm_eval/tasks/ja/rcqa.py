@@ -31,7 +31,7 @@ class RCQA(Task):
     """
     prompt template is taken from [日本語に特化した60億パラメータ規模のGPTモデルの構築と評価](https://www.anlp.jp/proceedings/annual_meeting/2023/pdf_dir/H9-4.pdf)
     """
-    VERSION = 0.1
+    VERSION = 1.0
     PROMPT_VERSION = 0.1
     DATASET_PATH = "retrieva-jp/rcqa"
     DATASET_NAME = None
