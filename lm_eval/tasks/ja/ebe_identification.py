@@ -38,7 +38,7 @@ class EbeIdentificationWithFintanPrompt(MultipleChoiceTask):
     prompt template is taken from [ChatGPT vs BERT: どちらが日本語をより理解できるのか?](https://fintan.jp/page/9126/)
     """
     VERSION = 1.0
-    PROMPT_VERSION = 0.0
+    PROMPT_VERSION = 0.2
     DATASET_PATH = "retrieva-jp/ebe_identification"
     DATASET_NAME = None
     DESCRIPTION = "前提と仮説の関係をentailment、contradictionのどちらかを回答してください。\n\n" + \
@@ -108,7 +108,7 @@ class EbeIdentificationWithJAAlpacaPrompt(EbeIdentificationWithFintanPrompt):
     - data: https://huggingface.co/datasets/fujiki/japanese_alpaca_data
     - code: https://github.com/Stability-AI/gpt-neox/blob/c130a4edc1120dccec8f02a34eb60d3e8f484cd3/finetune/finetune_base_ja.py#LL118C23-L127C11
     """
-    PROMPT_VERSION = 0.1
+    PROMPT_VERSION = 0.3
     DESCRIPTION = "以下は、タスクを説明する指示と、文脈のある入力の組み合わせです。要求を適切に満たす応答を書きなさい。\n\n"
     INSTRUCTION = f"与えられた前提と仮説の関係を回答してください。\n\n出力は以下から選択してください：\n" + "\n".join(EbeIdentificationWithFintanPrompt.CHOICES)
 
@@ -135,7 +135,7 @@ class EbeIdentificationWithRinnaInstructionSFT(EbeIdentificationWithFintanPrompt
     Reference:
     - HF Hub: https://huggingface.co/rinna/japanese-gpt-neox-3.6b-instruction-sft
     """
-    PROMPT_VERSION = 0.2
+    PROMPT_VERSION = 0.4
     DESCRIPTION = "ユーザー: " + f"与えられた前提と仮説の関係を回答してください。出力は以下から選択してください：<NL>" + "<NL>".join(EbeIdentificationWithFintanPrompt.CHOICES) + "<NL>システム: 分かりました。<NL>"
     SEP = "<NL>"
     FEWSHOT_SEP = "<NL>"
