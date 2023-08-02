@@ -64,7 +64,12 @@ from .ja import xlsum_ja
 from .ja import jaqket_v2
 from .ja import mgsm
 from .ja import livedoor_summarization
+from .ja import livedoor_classification
 from .ja import wikihow_summarization
+from .ja import pc_customer_demo
+from .ja import tmup
+from .ja import ebe_identification
+from .ja import jsnli
 
 ########################################
 # Translation tasks
@@ -346,8 +351,18 @@ TASK_REGISTRY = {
     # Retrieva
     "livedoor_summarization": livedoor_summarization.LivedoorSummarization,
     **livedoor_summarization.construct_tasks(),
+    "livedoor_classification": livedoor_classification.LivedoorClassificationWithFintanPrompt,
+    **livedoor_classification.construct_tasks(),
     "wikihow_summarization": wikihow_summarization.WikihowSummarization,
     **wikihow_summarization.construct_tasks(),
+    "pc_customer_demo": pc_customer_demo.PcCustomerDemoWithFintanPrompt,
+    **pc_customer_demo.construct_tasks(),
+    "tmup": tmup.TMUPPaws,
+    **tmup.construct_tasks(),
+    "ebe_identification": ebe_identification.EbeIdentificationWithFintanPrompt,
+    **ebe_identification.construct_tasks(),
+    "jsnli": jsnli.JSNLIWithFintanPrompt,
+    **jsnli.construct_tasks(),
 }
 
 
