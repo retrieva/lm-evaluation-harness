@@ -19,7 +19,7 @@ class JSNLIWithFintanPrompt(MultipleChoiceTask):
     """
     prompt template is taken from [ChatGPT vs BERT: どちらが日本語をより理解できるのか?](https://fintan.jp/page/9126/)
     """
-    VERSION = 1.0
+    VERSION = 1.1
     PROMPT_VERSION = 0.2
     DATASET_PATH = "retrieva-jp/jsnli-v1.1"
     DATASET_NAME = None
