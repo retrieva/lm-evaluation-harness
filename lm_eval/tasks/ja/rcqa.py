@@ -112,7 +112,9 @@ class RCQA(Task):
             "prediction_text": continuation,
         }
 
-        gold = {"text": [doc["answer"]]}  # for jasquad_metric
+        # jasquad metric のため gold の形式を整える
+        # answer_start には適当な値を設定（jasquad_metric では使用しない）
+        gold = {"text": [doc["answer"]], "answer_start": [-1]}
         references = {
             "id": doc["qid"],
             "answers": gold,
