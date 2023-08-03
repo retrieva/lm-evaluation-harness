@@ -2,6 +2,7 @@
 RCQA: Reading Comprehension Question Answering
 https://www.anlp.jp/proceedings/annual_meeting/2018/pdf_dir/C4-5.pdf
 
+プロンプトとして、jaqketのものを使用しています。
 
 Homepage: http://www.cl.ecei.tohoku.ac.jp/rcqa/
 """

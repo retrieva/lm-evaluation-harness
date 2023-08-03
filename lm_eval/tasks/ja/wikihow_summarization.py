@@ -2,6 +2,8 @@
 Wikihow Summarization
 https://www.anlp.jp/proceedings/annual_meeting/2021/pdf_dir/P1-12.pdf
 
+プロンプトとして xlsum_ja を参考にしています。
+
 Homepage: https://github.com/Katsumata420/wikihow_japanese
 """
 import os

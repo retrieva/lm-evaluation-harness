@@ -2,6 +2,8 @@
 Livedoor Summarization
 https://cl.sd.tmu.ac.jp/~komachi/thesis/2017-mthesis-kodaira.pdf
 
+プロンプトとして、xlsum_ja のものを使用しています。
+
 Homepage: https://github.com/KodairaTomonori/ThreeLineSummaryDataset
 """
 import os
