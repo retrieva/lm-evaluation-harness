@@ -1,0 +1,24 @@
+{
+  "results": {
+    "jsnli-1.1-0.2": {
+      "acc": 0.0,
+      "acc_stderr": 0.0,
+      "acc_norm": 0.0,
+      "acc_norm_stderr": 0.0
+    }
+  },
+  "versions": {
+    "jsnli-1.1-0.2": 1.1
+  },
+  "config": {
+    "model": "hf-causal",
+    "model_args": "pretrained=cyberagent/open-calm-medium,trust_remote_code=True,batch_size=4",
+    "num_fewshot": 1,
+    "batch_size": null,
+    "device": "cuda",
+    "no_cache": false,
+    "limit": null,
+    "bootstrap_iters": 100000,
+    "description_dict": {}
+  }
+}

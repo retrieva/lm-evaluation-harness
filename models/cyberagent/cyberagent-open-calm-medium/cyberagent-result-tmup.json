@@ -1,0 +1,22 @@
+{
+  "results": {
+    "tmup-1.0-0.0": {
+      "acc": 0.48854961832061067,
+      "acc_stderr": 0.019546419647567956
+    }
+  },
+  "versions": {
+    "tmup-1.0-0.0": 1.0
+  },
+  "config": {
+    "model": "hf-causal",
+    "model_args": "pretrained=cyberagent/open-calm-medium,trust_remote_code=True,batch_size=32",
+    "num_fewshot": 1,
+    "batch_size": null,
+    "device": "cuda",
+    "no_cache": false,
+    "limit": null,
+    "bootstrap_iters": 100000,
+    "description_dict": {}
+  }
+}

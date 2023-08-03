@@ -1,0 +1,24 @@
+{
+  "results": {
+    "livedoor_classification-1.0-0.2": {
+      "acc": 0.11684782608695653,
+      "acc_stderr": 0.011849074226916499,
+      "acc_norm": 0.11005434782608696,
+      "acc_norm_stderr": 0.011543610792856571
+    }
+  },
+  "versions": {
+    "livedoor_classification-1.0-0.2": 1.0
+  },
+  "config": {
+    "model": "hf-causal",
+    "model_args": "pretrained=cyberagent/open-calm-medium,trust_remote_code=True,batch_size=8",
+    "num_fewshot": 1,
+    "batch_size": null,
+    "device": "cuda",
+    "no_cache": false,
+    "limit": null,
+    "bootstrap_iters": 100000,
+    "description_dict": {}
+  }
+}

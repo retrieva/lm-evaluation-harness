@@ -1,0 +1,24 @@
+{
+  "results": {
+    "ebe_identification-1.0-0.2": {
+      "acc": 0.7682622323752856,
+      "acc_stderr": 0.0030755321190612805,
+      "acc_norm": 0.7694841417414865,
+      "acc_norm_stderr": 0.0030698514207876163
+    }
+  },
+  "versions": {
+    "ebe_identification-1.0-0.2": 1.0
+  },
+  "config": {
+    "model": "hf-causal",
+    "model_args": "pretrained=cyberagent/open-calm-medium,trust_remote_code=True,batch_size=32",
+    "num_fewshot": 1,
+    "batch_size": null,
+    "device": "cuda",
+    "no_cache": false,
+    "limit": null,
+    "bootstrap_iters": 100000,
+    "description_dict": {}
+  }
+}
