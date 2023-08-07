@@ -72,7 +72,7 @@ class JSQuAD(Task):
     """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.jasqaud_metric = datasets.load_metric(jasquad.__file__)
+        self.jasquad_metric = datasets.load_metric(jasquad.__file__)
 
     def has_training_docs(self):
         return True
@@ -171,7 +171,7 @@ class JSQuAD(Task):
         }
 
     def _squad_metric(self, predictions, references):
-        return self.jasqaud_metric.compute(predictions=predictions, references=references)
+        return self.jasquad_metric.compute(predictions=predictions, references=references)
 
 
     def _squad_agg(self, key, item):

@@ -130,7 +130,7 @@ class JNLIWithRinnaInstructionSFT(JNLIWithFintanPrompt):
     FEWSHOT_SEP = "<NL>"
 
     def doc_to_text(self, doc):
-        input_text = f"前提：{doc['premise']}\n仮説：{doc['hypothesis']}"
+        input_text = f"前提：{doc['premise']}{self.SEP}仮説：{doc['hypothesis']}"
         return f"ユーザー: {input_text}{self.SEP}システム: "
    
 

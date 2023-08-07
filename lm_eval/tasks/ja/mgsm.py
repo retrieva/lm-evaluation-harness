@@ -99,7 +99,10 @@ class MGSM(GradeSchoolMath8K):
         if matches:
             match_str = matches[-1].strip('.')
             match_str = match_str.replace(",", "")
-            match_float = float(match_str)
+            try:
+                match_float = float(match_str)
+            except ValueError:
+                return INVALID_ANS
             if match_float.is_integer():
                 return int(match_float)
 

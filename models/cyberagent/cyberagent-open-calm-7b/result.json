@@ -18,36 +18,48 @@
       "acc_norm": 0.7411928845483083,
       "acc_norm_stderr": 0.005784459117732042
     },
-    "jsquad-1.1-0.2": {
-      "exact_match": 48.176497073390365,
-      "f1": 61.04446929428723
-    },
-    "xlsum_ja": {
-      "rouge2": 2.0395791206778204
-    },
     "xwinograd_ja": {
       "acc": 0.6506777893639207,
       "acc_stderr": 0.01540328448938605
+    },
+    "jsquad-1.1-0.2": {
+      "exact_match": 45.79018460153084,
+      "f1": 59.03158509144496
+    },
+    "jaqket_v2-0.1-0.2": {
+      "exact_match": 60.738831615120276,
+      "f1": 64.89929362352039
+    },
+    "xlsum_ja": {
+      "rouge2": 2.0382422339290223
+    },
+    "mgsm": {
+      "acc": 0.008,
+      "acc_stderr": 0.005645483676690164
     }
   },
   "versions": {
     "jcommonsenseqa-1.1-0.2": 1.1,
     "jnli-1.1-0.2": 1.1,
-    "jsquad-1.1-0.2": 1.1,
     "marc_ja-1.1-0.2": 1.1,
+    "jsquad-1.1-0.2": 1.1,
+    "jaqket_v2-0.1-0.2": 0.1,
     "xlsum_ja": 1.0,
-    "xwinograd_ja": 1.0
+    "xwinograd_ja": 1.0,
+    "mgsm": 1.0
   },
   "config": {
     "model": "hf-causal",
     "model_args": "pretrained=cyberagent/open-calm-7b",
     "num_fewshot": [
+      3,
+      3,
+      3,
       2,
-      3,
-      3,
-      3,
       1,
-      0
+      1,
+      0,
+      5
     ],
     "batch_size": null,
     "device": "cuda",
