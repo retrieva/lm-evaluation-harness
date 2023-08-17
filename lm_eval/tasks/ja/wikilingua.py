@@ -150,11 +150,18 @@ class WikilinguaWithRinnaInstructionSFT(Wikilingua):
     def preprocess_ctx(self, ctx, max_length):
         return super().preprocess_ctx(ctx, max_length, ctx_prompt=f"{self.SEP}ユーザー: ", summary_prompt=f"{self.SEP}システム: ")
 
+class WikilinguaWithRinnaBilingualInstructionSFT(WikilinguaWithRinnaInstructionSFT):
+    PROMPT_VERSION = 0.5
+    DESCRIPTION = "ユーザー: 与えられたニュース記事を要約してください。\nシステム: 分かりました。\n"
+    SEP = "\n"
+    FEWSHOT_SEP = "\n"
+
 
 VERSIONS = [
     Wikilingua,
     WikilinguaWithJAAlpacaPrompt,
     WikilinguaWithRinnaInstructionSFT,
+    WikilinguaWithRinnaBilingualInstructionSFT,
 ]
 
 def construct_tasks():

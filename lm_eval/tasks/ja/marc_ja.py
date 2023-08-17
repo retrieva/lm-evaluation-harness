@@ -138,11 +138,23 @@ class MARCJaWithRinnaInstructionSFT(MARCJaWithFintanPrompt):
         return f"ユーザー: {input_text}{self.SEP}システム: "   
 
 
+class MARCJaWithRinnaBilingualInstructionSFT(MARCJaWithRinnaInstructionSFT):
+    """
+    Reference:
+    - HF Hub: https://huggingface.co/rinna/bilingual-gpt-neox-4b-instruction-sft
+    """
+    PROMPT_VERSION = 0.5
+    DESCRIPTION = "ユーザー: 与えられた製品レビューを、ポジティブまたはネガティブの感情クラスのいずれかに分類してください。\nシステム: 分かりました。\n"
+    SEP = "\n"
+    FEWSHOT_SEP = "\n"
+
+
 
 VERSIONS = [
     MARCJaWithFintanPrompt,
     MARCJaWithJAAlpacaPrompt,
     MARCJaWithRinnaInstructionSFT,
+    MARCJaWithRinnaBilingualInstructionSFT,
 ]
 
 

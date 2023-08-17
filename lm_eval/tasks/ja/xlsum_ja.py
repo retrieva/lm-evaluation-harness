@@ -203,11 +203,22 @@ class XLSumJaWithRinnaInstructionSFT(XLSumJa):
         ctx = ctx.replace("<NL><NL>", "<NL>")
         return ctx
     
-    
+class XLSumJaWithRinnaBilingualInstructionSFT(XLSumJaWithRinnaInstructionSFT):
+    """
+    Reference:
+    - HF Hub: https://huggingface.co/rinna/bilingual-gpt-neox-4b-instruction-sft
+    """
+    PROMPT_VERSION = 0.5
+    DESCRIPTION = "ユーザー: 与えられたニュース記事を要約してください。\nシステム: 分かりました。\n"
+    SEP = "\n"
+    FEWSHOT_SEP = "\n"
+
+
 VERSIONS = [
     XLSumJa,
     XLSumJaWithJAAlpacaPrompt,
     XLSumJaWithRinnaInstructionSFT,
+    XLSumJaWithRinnaBilingualInstructionSFT,
 ]
 
 

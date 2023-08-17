@@ -56,7 +56,7 @@ This is intended to use for instruction-tuned models trained on [Japanese Alpaca
 japanese-alpaca-lora
 ](https://github.com/masa3141/japanese-alpaca-lora)
   - https://github.com/Stability-AI/gpt-neox/blob/bed0b5aa66142aa649299b76d4e3948efccd0bf4/finetune/templates.py
-- **Supported Tasks:** `jsquad`, `jaquad`, `jcommonsenseqa`, `jnli`, `marc_ja`, `jaqket_v2`
+- **Supported Tasks:** `jsquad`, `jaquad`, `jcommonsenseqa`, `jnli`, `marc_ja`, `jaqket_v2`, `xlsum_ja`, `mgsm`
 - **Format:**
   e.g. JCommonsenseQA
   ```
@@ -85,7 +85,7 @@ This is intended to use for [rinna/japanese-gpt-neox-3.6b-instruction-sft](https
 
 
 - **Reference:** [rinna/japanese-gpt-neox-3.6b-instruction-sft](https://huggingface.co/rinna/japanese-gpt-neox-3.6b-instruction-sft)
-- **Supported Tasks:** `jsquad`, `jaquad`, `jcommonsenseqa`, `jnli`, `marc_ja`, `jaqket_v2`
+- **Supported Tasks:** `jsquad`, `jaquad`, `jcommonsenseqa`, `jnli`, `marc_ja`, `jaqket_v2`, `xlsum_ja`, `mgsm`
 - **Format:**
   e.g. JCommonsenseQA
   ```
@@ -94,5 +94,26 @@ This is intended to use for [rinna/japanese-gpt-neox-3.6b-instruction-sft](https
   <NL>ユーザー: 質問：{question}<NL>選択肢：<NL>- {choice0}<NL>- {choice1}<NL>...<NL>- {choice4}<NL>
   
   <NL>システム: {answer}
+  ```
+  For formats for other tasks, please see `lm_eval/tasks/TASK.py`.
+
+## `0.5`
+This is intended to use for [rinna/bilingual-gpt-neox-4b-instruction-sft](https://huggingface.co/rinna/bilingual-gpt-neox-4b-instruction-sft).
+
+
+- **Reference:** [rinna/bilingual-gpt-neox-4b-instruction-sft](https://huggingface.co/rinna/bilingual-gpt-neox-4b-instruction-sft)
+- **Supported Tasks:** `jsquad`, `jaquad`, `jcommonsenseqa`, `jnli`, `marc_ja`, `jaqket_v2`, `xlsum_ja`, `mgsm`
+- **Format:**
+  e.g. JCommonsenseQA
+  ```
+  ユーザー: 与えられた選択肢の中から、最適な答えを選んでください。
+  システム: 分かりました。
+  ユーザー: 質問：{question}
+  選択肢：
+  - {choice0}
+  - {choice1}
+  ...
+  - {choice4}
+  システム: {answer}
   ```
   For formats for other tasks, please see `lm_eval/tasks/TASK.py`.

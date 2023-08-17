@@ -190,12 +190,23 @@ class JCommonsenseQAWithRinnaInstructionSFT(JCommonsenseQA):
         return f"ユーザー: {input_text}{self.SEP}システム: "
         
 
+class JCommonsenseQAWithRinnaBilingualInstructionSFT(JCommonsenseQAWithRinnaInstructionSFT):
+    """
+    Reference:
+    - HF Hub: https://huggingface.co/rinna/bilingual-gpt-neox-4b-instruction-sft
+    """
+    PROMPT_VERSION = 0.5
+    DESCRIPTION = "ユーザー: 与えられた選択肢の中から、最適な答えを選んでください。\nシステム: 分かりました。\n"
+    SEP = "\n"
+    FEWSHOT_SEP = "\n"
+
 
 VERSIONS = [
     JCommonsenseQA,
     JCommonsenseQAWithFintanPrompt,
     JCommonsenseQAWithJAAlpacaPrompt,
     JCommonsenseQAWithRinnaInstructionSFT,
+    JCommonsenseQAWithRinnaBilingualInstructionSFT,
 ]
 
 

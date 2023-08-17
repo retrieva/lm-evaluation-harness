@@ -247,11 +247,23 @@ class JSQuADWithRinnaInstructionSFT(JSQuAD):
         return f"ユーザー: {input_text}{self.SEP}システム: "
 
 
+class JSQuADWithRinnaBilingualInstructionSFT(JSQuADWithRinnaInstructionSFT):
+    """
+    Reference:
+    - HF Hub: https://huggingface.co/rinna/bilingual-gpt-neox-4b-instruction-sft
+    """
+    PROMPT_VERSION = 0.5
+    DESCRIPTION = "ユーザー: 与えられた文脈から、質問に対する答えを抜き出してください。\nシステム: 分かりました。\n"
+    SEP = "\n"
+    FEWSHOT_SEP = "\n"
+
+    
 VERSIONS = [
     JSQuAD,
     JSQuADWithFintanPrompt,
     JSQuADWithJAAlpacaPrompt,
     JSQuADWithRinnaInstructionSFT,
+    JSQuADWithRinnaBilingualInstructionSFT,
 ]
 
 

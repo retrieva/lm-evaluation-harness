@@ -134,11 +134,22 @@ class JNLIWithRinnaInstructionSFT(JNLIWithFintanPrompt):
         return f"ユーザー: {input_text}{self.SEP}システム: "
    
 
+class JNLIWithRinnaBilingualInstructionSFT(JNLIWithRinnaInstructionSFT):
+    """
+    Reference:
+    - HF Hub: https://huggingface.co/rinna/bilingual-gpt-neox-4b-instruction-sft
+    """
+    PROMPT_VERSION = 0.5
+    DESCRIPTION = "ユーザー: " + f"与えられた前提と仮説の関係を回答してください。出力は以下から選択してください：\n" + "\n".join(JNLIWithFintanPrompt.CHOICES) + "\nシステム: 分かりました。\n"
+    SEP = "\n"
+    FEWSHOT_SEP = "\n"
+
 
 VERSIONS = [
     JNLIWithFintanPrompt,
     JNLIWithJAAlpacaPrompt,
     JNLIWithRinnaInstructionSFT,
+    JNLIWithRinnaBilingualInstructionSFT,
 ]
 
 

@@ -164,10 +164,22 @@ class MGSMWithRinnaInstructionSFT(MGSM):
         input_text = f"問題：{doc['question'].replace('問題：','')}"
         return f"ユーザー: {input_text}<NL>システム: ステップごとの答え："
 
+
+class MGSMWithRinnaBilingualInstructionSFT(MGSMWithRinnaInstructionSFT):
+    """
+    Reference:
+    - HF Hub: https://huggingface.co/rinna/bilingual-gpt-neox-4b-instruction-sft
+    """
+    PROMPT_VERSION = 0.5
+    DESCRIPTION = f"ユーザー: 与えられた問題をステップごとに解説してください。\nシステム: 分かりました。\n"
+    FEWSHOT_SEP = "\n"
+
+
 VERSIONS = [
     MGSM,
     MGSMWithJAAlpacaPrompt,
-    MGSMWithRinnaInstructionSFT
+    MGSMWithRinnaInstructionSFT,
+    MGSMWithRinnaBilingualInstructionSFT,
 ]
 
 
