@@ -38,6 +38,8 @@ setuptools.setup(
         "tqdm-multiprocess",
         "transformers>=4.1",
         "zstandard",
+        "bert-score",
+        "sumeval @ git+https://github.com/Katsumata420/sumeval.git",
     ],
     extras_require={
         "dev": ["black", "flake8", "pre-commit", "pytest", "pytest-cov"],
