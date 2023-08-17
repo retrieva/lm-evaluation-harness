@@ -269,7 +269,7 @@ def rougel_summary_japanese(refs, preds):
     Google's RougeLSum uses English Sentence tokenizer, so we use SumEval's one.
     As for Bootstrap, we use the same method as the Google's one.
     """
-    scorer = RougeCalculator(stopwords=False, lang="ja", split_summries=True)
+    scorer = RougeCalculator(stopwords=False, lang="ja", split_summaries=True)
 
     aggregator = scoring.BootstrapAggregator()
     for ref, pred in zip(refs, preds):
