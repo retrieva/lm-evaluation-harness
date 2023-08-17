@@ -2,16 +2,18 @@
 XL-Sum: Large-Scale Multilingual Abstractive Summarization for 44 Languages
 https://aclanthology.org/2021.findings-acl.413/
 
-We present XLSum, a comprehensive and diverse dataset comprising 1.35 million professionally annotated article-summary pairs from BBC, extracted using a set of carefully designed heuristics. 
-The dataset covers 45 languages ranging from low to high-resource, for many of which no public dataset is currently available. 
-XL-Sum is highly abstractive, concise, and of high quality, as indicated by human and intrinsic evaluation. 
+We present XLSum, a comprehensive and diverse dataset comprising 1.35 million professionally annotated article-summary pairs from BBC, extracted using a set of carefully designed heuristics.
+The dataset covers 45 languages ranging from low to high-resource, for many of which no public dataset is currently available.
+XL-Sum is highly abstractive, concise, and of high quality, as indicated by human and intrinsic evaluation.
 
 Homepage: https://github.com/csebuetnlp/xl-sum
 """
 import os
+import functools
 import inspect
-from lm_eval.utils import rouge2_mecab
+from lm_eval.utils import rouge2_mecab, rouge1_mecab
 from lm_eval.base import rf, Task
+from lm_eval.metrics import rougel_summary_japanese, bert_score
 
 
 _CITATION = """
@@ -41,9 +43,9 @@ DYNAMIC_MAX_LENGTH = os.getenv("DYNAMIC_MAX_LENGTH", "true").lower()
 
 
 class XLSumJa(Task):
-    """ 
+    """
     - Use ROUGE-2 as [PaLM 2](https://ai.google/static/documents/palm2techreport.pdf)
-    - Use Mecab tokenizer for Japanese eval 
+    - Use Mecab tokenizer for Japanese eval
     """
     VERSION = 1.0
     # this prompt was made by mkshing
@@ -67,13 +69,13 @@ class XLSumJa(Task):
 
     def has_test_docs(self):
         return True
-    
+
     def training_docs(self):
         return self.dataset["train"]
 
     def validation_docs(self):
         return self.dataset["validation"]
-    
+
     def test_docs(self):
         return self.dataset["test"]
 
@@ -86,7 +88,7 @@ class XLSumJa(Task):
     def preprocess_ctx(self, ctx, max_length, ctx_prompt="ニュース記事:", summary_prompt="要約:"):
         if len(self._tokenize(ctx)) <= max_length:
             return ctx
-        # if the inputs too long, truncate inputs 
+        # if the inputs too long, truncate inputs
         ctxs = [f"{ctx_prompt}{c}"for c in ctx.split(ctx_prompt)]
         description = ""
         if summary_prompt not in ctxs[0]:
@@ -115,7 +117,7 @@ class XLSumJa(Task):
             c_res += "。".join(add_sentences)
             res += f"{c_res}{summary_prompt}{summary}"
         return res
-    
+
     def _tokenize(self, text, **kwargs):
         encode_fn = self.tokenizer.encode
         if "add_special_tokens" in inspect.getfullargspec(encode_fn).args:
@@ -138,26 +140,58 @@ class XLSumJa(Task):
         continuation = results[0]
         ground_truth = doc["summary"]
         return {
+            "rouge1": (
+                continuation,
+                ground_truth,
+            ),
             "rouge2": (
                 continuation,
                 ground_truth,
-            )
+            ),
+            "rougeLsum": (
+                continuation,
+                ground_truth,
+            ),
+            "bertscore": (
+                continuation,
+                ground_truth,
+            ),
         }
-    
+
     def aggregation(self):
         return {
-            "rouge2": self._rouge
+            "rouge1": functools.partial(self._rouge_n, rouge_type="rouge1"),
+            "rouge2": functools.partial(self._rouge_n, rouge_type="rouge2"),
+            "rougeLsum": functools.partial(self._rouge_n, rouge_type="rougeLsum"),
+            "bertscore": self._bertscore,
         }
 
     def higher_is_better(self):
         return {
+            "rouge1": True,
             "rouge2": True,
+            "rougeLsum": True,
+            "bertscore": True,
         }
-    
-    def _rouge(self, item):
+
+    def _rouge_n(self, item, rouge_type):
         predictions, references = zip(*item)
-        res = rouge2_mecab(refs=references, preds=predictions, tokenizer=self.tokenizer)
-        return res["rouge2"]
+        if rouge_type == "rouge1":
+            res = rouge1_mecab(refs=references, preds=predictions, tokenizer=self.tokenizer)
+            return res["rouge1"]
+        elif rouge_type == "rouge2":
+            res = rouge2_mecab(refs=references, preds=predictions, tokenizer=self.tokenizer)
+            return res["rouge2"]
+        elif rouge_type == "rougeLsum":
+            res = rougel_summary_japanese(refs=references, preds=predictions)
+            return res["rougeLsum"]
+        else:
+            raise NotImplementedError
+
+    def _bertscore(self, item):
+        predictions, references = zip(*item)
+        res = bert_score(refs=references, preds=predictions, lang="ja")
+        return res["bert_score"]
 
 
 class XLSumJaWithJAAlpacaPrompt(XLSumJa):
@@ -168,13 +202,13 @@ class XLSumJaWithJAAlpacaPrompt(XLSumJa):
         """
         以下は、タスクを説明する指示と、文脈のある入力の組み合わせです。要求を適切に満たす応答を書きなさい。
 
-        ### 指示: 
+        ### 指示:
         {instruction}
 
-        ### 入力: 
+        ### 入力:
         {input}
 
-        ### 応答: 
+        ### 応答:
         {response}
         """
         input_text = f"ニュース記事:{doc['text']}"
@@ -197,12 +231,12 @@ class XLSumJaWithRinnaInstructionSFT(XLSumJa):
     def doc_to_text(self, doc):
         input_text = f"ニュース記事:{doc['text']}"
         return f"ユーザー: {input_text}{self.SEP}システム: "
-    
+
     def preprocess_ctx(self, ctx, max_length):
         ctx = super().preprocess_ctx(ctx, max_length, ctx_prompt=f"ユーザー: ", summary_prompt=f"{self.SEP}システム: ")
         ctx = ctx.replace("<NL><NL>", "<NL>")
         return ctx
-    
+
 class XLSumJaWithRinnaBilingualInstructionSFT(XLSumJaWithRinnaInstructionSFT):
     """
     Reference:

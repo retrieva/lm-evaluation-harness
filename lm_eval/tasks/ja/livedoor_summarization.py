@@ -11,6 +11,7 @@ import inspect
 from lm_eval.utils import rouge2_mecab
 from lm_eval.base import rf, Task
 
+from .xlsum_ja import XLSumJa
 
 _CITATION = """
 """
@@ -19,7 +20,7 @@ _CITATION = """
 DYNAMIC_MAX_LENGTH = os.getenv("DYNAMIC_MAX_LENGTH", "true").lower()
 
 
-class LivedoorSummarization(Task):
+class LivedoorSummarization(XLSumJa):
     """
     - Use ROUGE-2 as [PaLM 2](https://ai.google/static/documents/palm2techreport.pdf)
     - Use Mecab tokenizer for Japanese eval
@@ -114,28 +115,25 @@ class LivedoorSummarization(Task):
 
     def process_results(self, doc, results):
         continuation = results[0]
-        ground_truth = doc["tgt"]
+        ground_truth = doc["tgt"]  # Different from XLSumJa
         return {
+            "rouge1": (
+                continuation,
+                ground_truth,
+            ),
             "rouge2": (
                 continuation,
                 ground_truth,
-            )
+            ),
+            "rougeLsum": (
+                continuation,
+                ground_truth,
+            ),
+            "bertscore": (
+                continuation,
+                ground_truth,
+            ),
         }
-
-    def aggregation(self):
-        return {
-            "rouge2": self._rouge
-        }
-
-    def higher_is_better(self):
-        return {
-            "rouge2": True,
-        }
-
-    def _rouge(self, item):
-        predictions, references = zip(*item)
-        res = rouge2_mecab(refs=references, preds=predictions, tokenizer=self.tokenizer)
-        return res["rouge2"]
 
 
 class LivedoorSummarizationWithJAAlpacaPrompt(LivedoorSummarization):
