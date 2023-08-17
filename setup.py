@@ -39,19 +39,20 @@ setuptools.setup(
         "transformers>=4.1",
         "zstandard",
         "bert-score",
-        "sumeval @ git+https://github.com/Katsumata420/sumeval.git",
+        "sumeval[ja] @ git+https://github.com/Katsumata420/sumeval.git",
     ],
     extras_require={
         "dev": ["black", "flake8", "pre-commit", "pytest", "pytest-cov"],
         "multilingual": ["nagisa>=0.2.7", "jieba>=0.42.1"],
         "sentencepiece": ["sentencepiece>=0.1.98", "protobuf>=4.22.1"],
         "ja": [
-            "sentencepiece>=0.1.98", 
-            "protobuf>=4.22.1", 
-            "neologdn>=0.5.1", 
-            "emoji>=2.1.0", 
+            "sentencepiece>=0.1.98",
+            "protobuf>=4.22.1",
+            "neologdn>=0.5.1",
+            "emoji>=2.1.0",
             "fugashi[unidic-lite]",
             "mojimoji>=0.0.12",
+            "janome",
         ]
     },
 )
