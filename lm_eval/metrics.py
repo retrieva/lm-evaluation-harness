@@ -5,6 +5,9 @@ import numpy as np
 import sacrebleu
 import sklearn.metrics
 import random
+from bert_score import score
+from rouge_score import scoring
+from sumeval.metrics.rouge import RougeCalculator
 
 
 def mean(arr):
@@ -257,3 +260,32 @@ def yesno(x):
         return "yes"
     else:
         return "no"
+
+
+def rougel_summary_japanese(refs, preds):
+    """Summary-level Rouge-L Score using SumEval.
+
+    This is a wrapper around the SumEval RougeCalculator class.
+    Google's RougeLSum uses English Sentence tokenizer, so we use SumEval's one.
+    As for Bootstrap, we use the same method as the Google's one.
+    """
+    scorer = RougeCalculator(stopwords=False, lang="ja", split_summaries=True)
+
+    aggregator = scoring.BootstrapAggregator()
+    for ref, pred in zip(refs, preds):
+        sumeval_score = scorer.rouge_l_summary(pred, ref)
+        # precision and recall is dummy score.
+        google_score_format = scoring.Score(precision=-1, recall=-1, fmeasure=sumeval_score)
+        aggregator.add_scores({"rougeLsum": google_score_format})
+    result = aggregator.aggregate()
+    return {"rougeLsum": result["rougeLsum"].mid.fmeasure * 100}
+
+
+def bert_score(refs, preds, lang):
+    """Evaluation with BertScore.
+
+    Args:
+        lang (str): Language of the text. Currently only Japanese is supported.
+    """
+    precision, recall, f_measure = score(preds, refs, lang=lang)
+    return {"bert_score": f_measure.mean().cpu().item() * 100}
