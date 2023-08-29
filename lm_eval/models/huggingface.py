@@ -1,4 +1,5 @@
 import math
+import json
 import torch
 import torch.nn.functional as F
 import transformers
@@ -6,7 +7,7 @@ import peft
 from typing import List, Mapping, NewType, Optional, Tuple, Union
 from tqdm import tqdm
 
-from transformers import BatchEncoding
+from transformers import BatchEncoding, BitsAndBytesConfig
 
 from lm_eval import utils
 from lm_eval.base import BaseLM
@@ -85,7 +86,8 @@ class HuggingFaceAutoLM(BaseLM):
         peft: str = None,
         load_in_8bit: Optional[bool] = False,
         trust_remote_code: Optional[bool] = False,
-        use_fast: Optional[bool] = True
+        use_fast: Optional[bool] = True,
+        quantization_config_path: Optional[str] = None,
     ):
         """Initializes a HuggingFace `AutoModel` and `AutoTokenizer` for evaluation.
         Args:
@@ -141,6 +143,8 @@ class HuggingFaceAutoLM(BaseLM):
                 If True, will trust the remote code when loading the model.
             use_fast (bool, optional, defaults to True):
                 If True, will use the fast tokenizer when loading the model.
+            quantization_config (str, optional, defaults to None):
+                Path to the quantization config file.
         """
         super().__init__()
 
@@ -188,12 +192,14 @@ class HuggingFaceAutoLM(BaseLM):
                 offload_folder,
             )
         model_kwargs["load_in_8bit"] = load_in_8bit
+        quantization_config = self._create_quantization_config(quantization_config_path)
         self.model = self._create_auto_model(
             pretrained=pretrained,
             trust_remote_code=trust_remote_code,
             revision=revision,
             subfolder=subfolder,
             torch_dtype=_get_dtype(dtype, self._config),
+            quantization_config=quantization_config,
             **model_kwargs,
         )
         # note: peft_path can be different than pretrained model path
@@ -233,6 +239,7 @@ class HuggingFaceAutoLM(BaseLM):
         load_in_8bit: Optional[bool] = False,
         trust_remote_code: Optional[bool] = False,
         torch_dtype: Optional[Union[str, torch.dtype]] = None,
+        quantization_config: Optional[BitsAndBytesConfig] = None,
     ) -> transformers.AutoModel:
         """Returns a pre-trained pytorch model from a pre-trained model configuration."""
         model = self.AUTO_MODEL_CLASS.from_pretrained(
@@ -244,6 +251,7 @@ class HuggingFaceAutoLM(BaseLM):
             load_in_8bit=load_in_8bit,
             trust_remote_code=trust_remote_code,
             torch_dtype=torch_dtype,
+            quantization_config=quantization_config,
         )
         return model
 
@@ -291,6 +299,21 @@ class HuggingFaceAutoLM(BaseLM):
         )
         tokenizer.pad_token = tokenizer.eos_token
         return tokenizer
+
+    def _create_quantization_config(
+        self, quantization_config_path: Optional[str] = None
+    ) -> Optional[BitsAndBytesConfig]:
+        if quantization_config_path is None:
+            return None
+
+        with open(quantization_config_path, "r") as f:
+            quantization_config_dict = json.load(f)
+        # Convert dtype's strings to the appropriate types.
+        quantization_config_dict["bnb_4bit_compute_dtype"] = eval(
+            quantization_config_dict["bnb_4bit_compute_dtype"]
+        )
+        quantization_config = BitsAndBytesConfig(**quantization_config_dict)
+        return quantization_config
 
     @property
     def add_special_tokens(self) -> bool:
@@ -389,7 +412,7 @@ class HuggingFaceAutoLM(BaseLM):
                 isinstance(max_generation_length, int) or max_generation_length is None
             )
             assert isinstance(stop_sequences, list) or stop_sequences is None
-            
+
             # TODO: Find a better way to handle stop sequences for 0-shot.
             if stop_sequences is None:
                 until = [self.eot_token]
