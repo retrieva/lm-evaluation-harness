@@ -193,13 +193,13 @@ class HuggingFaceAutoLM(BaseLM):
             )
         model_kwargs["load_in_8bit"] = load_in_8bit
         quantization_config = self._create_quantization_config(quantization_config_path)
-        model_kwargs["quantization_config"] = quantization_config
         self.model = self._create_auto_model(
             pretrained=pretrained,
             trust_remote_code=trust_remote_code,
             revision=revision,
             subfolder=subfolder,
             torch_dtype=_get_dtype(dtype, self._config),
+            quantization_config=quantization_config,
             **model_kwargs,
         )
         # note: peft_path can be different than pretrained model path
