@@ -7,6 +7,8 @@ PC Customer Demo
 
 Homepage: None
 """
+import numpy as np
+
 from lm_eval.base import MultipleChoiceTask, rf
 
 _CITATION = """
@@ -68,6 +70,20 @@ class PcCustomerDemoWithFintanPrompt(MultipleChoiceTask):
         ]
 
         return lls
+
+    def process_results(self, doc, results):
+        gold = doc["gold"]
+        choices = doc["choices"]
+
+        acc = 1.0 if choices[np.argmax(results)] == gold else 0.0
+        completion_len = np.array([float(len(i)) for i in choices])
+        acc_norm = 1.0 if choices[np.argmax(results / completion_len)] == gold else 0.0
+
+        return {
+            "acc": acc,
+            "acc_norm": acc_norm,
+        }
+
 
 
 
